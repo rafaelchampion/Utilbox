@@ -4,8 +4,8 @@ A toolbox of utilities for C# developers.
 
 | Package         |  Version | Downloads |
 |-----------------| ----- | ----- |
-| `Utilbox.Dates` |  |  |
-| `Utilbox.Enum`  |  |  |
+| `Utilbox.Dates` | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Dates) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Dates) |
+| `Utilbox.Enum`  | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Enum) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Enum) |
 
 ### Dependencies
 .NET Standard 2.0
