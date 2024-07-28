@@ -1,5 +1,7 @@
 # Utilbox
 
+![Utilbox logo](https://i.postimg.cc/ygMsY5Ps/Logo-Utilbox-Enum.png)
+
 A toolbox of utilities for C# developers.
 
 | Package         |  Version | Downloads |

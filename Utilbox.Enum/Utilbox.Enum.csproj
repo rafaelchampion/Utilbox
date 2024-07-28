@@ -2,12 +2,27 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+
+        <PackageId>Utilbox.Enum</PackageId>
+        <License>MIT</License>
+        <Authors>Rafael Ferreira</Authors>
+        <Company>RAZ Solutions</Company>
+        <RepositoryUrl>https://github.com/rafaelchampion/Utilbox</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/rafaelchampion/Utilbox</PackageProjectUrl>
+        <PackageTags>Toolbox;utils;Utilbox</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Title>Utilbox.Enum</Title>
+        <Summary>A toolbox of utilities for C# developers.</Summary>
+        <PackageIcon>icon.png</PackageIcon>
+        <icon>https://i.postimg.cc/ygMsY5Ps/Logo-Utilbox-Enum.png</icon>
+
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-      <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0"/>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\Media\Logo.Utilbox.Enum.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>
