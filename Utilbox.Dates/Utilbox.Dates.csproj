@@ -13,7 +13,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Title>Utilbox.Dates</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
-        <PackageIcon>icon.png</PackageIcon>
+        <PackageIcon>Logo.Utilbox.Dates.png</PackageIcon>
         <icon>https://i.postimg.cc/ygg7KB0L/Logo-Utilbox-Dates.png</icon>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>

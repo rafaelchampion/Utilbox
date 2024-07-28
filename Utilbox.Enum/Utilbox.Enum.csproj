@@ -13,7 +13,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Title>Utilbox.Enum</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
-        <PackageIcon>icon.png</PackageIcon>
+        <PackageIcon>Logo.Utilbox.Enum.png</PackageIcon>
         <icon>https://i.postimg.cc/ygMsY5Ps/Logo-Utilbox-Enum.png</icon>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
