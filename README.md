@@ -1,6 +1,6 @@
 # Utilbox
 
-![Utilbox logo](https://i.postimg.cc/ygMsY5Ps/Logo-Utilbox-Enum.png)
+![Utilbox logo](https://i.postimg.cc/0K7x6fWm/Logo-Utilbox.png)
 
 A toolbox of utilities for C# developers.
 
