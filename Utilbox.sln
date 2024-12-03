@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Enum", "Utilbox.Enu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Dates", "Utilbox.Dates\Utilbox.Dates.csproj", "{028211F4-0788-46EB-91D0-57376520C4D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Result", "Utilbox.Result\Utilbox.Result.csproj", "{AD041B65-869E-4804-BDBD-6A4B2F8F523C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{028211F4-0788-46EB-91D0-57376520C4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{028211F4-0788-46EB-91D0-57376520C4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{028211F4-0788-46EB-91D0-57376520C4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD041B65-869E-4804-BDBD-6A4B2F8F523C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD041B65-869E-4804-BDBD-6A4B2F8F523C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD041B65-869E-4804-BDBD-6A4B2F8F523C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD041B65-869E-4804-BDBD-6A4B2F8F523C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

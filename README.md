@@ -1,22 +1,49 @@
-# Utilbox
+# Utilbox 🛠️
 
 ![Utilbox logo](https://i.postimg.cc/0K7x6fWm/Logo-Utilbox.png)
 
-A toolbox of utilities for C# developers.
+**Utilbox** is a collection of utility libraries designed to make development easier, faster, and more efficient for C# developers. With a focus on flexibility and performance, Utilbox offers a wide range of tools, from date and enum manipulation to the powerful Result pattern implementation.
 
-| Package         |  Version | Downloads |
-|-----------------| ----- | ----- |
-| `Utilbox.Dates` | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Dates) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Dates) |
-| `Utilbox.Enum`  | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Enum) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Enum) |
+___
 
-### Dependencies
+### 🚀 Getting Started
+
+#### NuGet Packages:
+
+| Package          | Version                                                         | Downloads                                                          |
+|------------------|-----------------------------------------------------------------|--------------------------------------------------------------------|
+| `Utilbox.Dates`  | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Dates)  | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Dates)  |
+| `Utilbox.Enum`   | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Enum)   | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Enum)   |
+| `Utilbox.Result` | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Result) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Result) |
+
+You can install any of these packages directly from NuGet:
+
+```
+Install-Package Utilbox.Dates
+Install-Package Utilbox.Enum
+Install-Package Utilbox.Result
+```
+Or by using the .NET CLI:
+
+```
+dotnet add package Utilbox.Dates
+dotnet add package Utilbox.Enum
+dotnet add package Utilbox.Result
+```
+___
+
+### 🌟 Dependencies
 .NET Standard 2.0
 
 You can check supported frameworks here:
 https://docs.microsoft.com/pt-br/dotnet/standard/net-standard
 
-License
-Utilbox is licensed under the MIT license.
+___
 
-About
+### ⚡ License
+Utilbox is licensed under the MIT License.
+
+___
+
+### 👨‍💻 About the Author
 Utilbox was created by Rafael Ferreira under RAZ Solutions. If you have any questions or would like more information, feel free to contact me!

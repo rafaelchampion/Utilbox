@@ -1,32 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
 
-        <PackageId>Utilbox.Enum</PackageId>
+        <PackageId>Utilbox.Result</PackageId>
         <License>MIT</License>
         <Authors>Rafael Ferreira</Authors>
         <Company>RAZ Solutions</Company>
         <RepositoryUrl>https://github.com/rafaelchampion/Utilbox</RepositoryUrl>
         <PackageProjectUrl>https://github.com/rafaelchampion/Utilbox</PackageProjectUrl>
-        <PackageTags>Toolbox;utils;Utilbox</PackageTags>
+        <PackageTags>Toolbox;utils;Utilbox;Result</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Title>Utilbox.Enum</Title>
+        <Title>Utilbox.Result</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
-        <PackageIcon>Logo.Utilbox.Enum.png</PackageIcon>
-        <icon>https://i.postimg.cc/ygMsY5Ps/Logo-Utilbox-Enum.png</icon>
+        <PackageIcon>Logo.Utilbox.Result.png</PackageIcon>
+        <icon>https://i.postimg.cc/Gh3hrcz5/Logo-Utilbox-Result.png</icon>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
 
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-        <Version>1.0.1</Version>
+        <Version>1.0.0</Version>
+
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0"/>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
-        <None Include="..\Media\Logo.Utilbox.Enum.png" Pack="true" PackagePath="\"/>
+        <None Include="..\Media\Logo.Utilbox.Result.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
-
 </Project>
