@@ -20,10 +20,11 @@
 
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-        <Version>1.0.0</Version>
+        <Version>1.0.3</Version>
 
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <RootNamespace>Utilbox.Result</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

@@ -3,32 +3,32 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
 
-        <PackageId>Utilbox.Dates</PackageId>
+        <PackageId>Utilbox.Strings</PackageId>
         <License>MIT</License>
         <Authors>Rafael Ferreira</Authors>
         <Company>RAZ Solutions</Company>
         <RepositoryUrl>https://github.com/rafaelchampion/Utilbox</RepositoryUrl>
         <PackageProjectUrl>https://github.com/rafaelchampion/Utilbox</PackageProjectUrl>
-        <PackageTags>Toolbox;utils;Utilbox</PackageTags>
+        <PackageTags>Toolbox;utils;Utilbox;String;Strings</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Title>Utilbox.Dates</Title>
+        <Title>Utilbox.Strings</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
-        <PackageIcon>Logo.Utilbox.Dates.png</PackageIcon>
-        <icon>https://i.postimg.cc/ygg7KB0L/Logo-Utilbox-Dates.png</icon>
+        <PackageIcon>Logo.Utilbox.Strings.png</PackageIcon>
+        <icon>https://i.postimg.cc/598TkTxQ/Logo-Utilbox-Strings.png</icon>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
 
-        <Version>1.0.4</Version>
-
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>1.0.0</Version>
 
-        <LangVersion>8</LangVersion>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Utilbox.Strings</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0"/>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
-        <None Include="..\Media\Logo.Utilbox.Dates.png" Pack="true" PackagePath="\"/>
+        <None Include="..\Media\Logo.Utilbox.Strings.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
-
 </Project>

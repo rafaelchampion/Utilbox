@@ -1,20 +1,20 @@
 using System;
 
-namespace Utilbox.Dates.DatetimeToolbox.Classes
+namespace Utilbox.Dates
 {
     public struct DatetimeSpan
     {
-        public DateTime StartDateTime { get; private set; }
-        public DateTime EndDateTime { get; private set; }
+        public DateTime Start { get; private set; }
+        public DateTime End { get; private set; }
 
-        public DatetimeSpan(DateTime startDateTime, DateTime endDateTime)
+        public DatetimeSpan(DateTime start, DateTime end)
         {
-            if (startDateTime > endDateTime)
+            if (start > end)
             {
-                throw new ArgumentException("Start date must be before the end date", nameof(startDateTime));
+                throw new ArgumentException("Start date must be before the end date", nameof(start));
             }
-            StartDateTime = startDateTime;
-            EndDateTime = endDateTime;
+            Start = start;
+            End = end;
         }
     }
 }
