@@ -33,10 +33,10 @@ namespace Utilbox.Enums
             var enumType = typeof(TEnum);
 
             return (from field in enumType.GetFields(BindingFlags.Public | BindingFlags.Static)
-                let descriptionAttribute = field.GetCustomAttribute<DescriptionAttribute>()
-                let enumValue = (TEnum)field.GetValue(null)
-                let description = descriptionAttribute?.Description ?? enumValue.ToString()
-                select new KeyValuePair<int, string>(Convert.ToInt32(enumValue), description)).ToList();
+                    let descriptionAttribute = field.GetCustomAttribute<DescriptionAttribute>()
+                    let enumValue = (TEnum)field.GetValue(null)
+                    let description = descriptionAttribute?.Description ?? enumValue.ToString()
+                    select new KeyValuePair<int, string>(Convert.ToInt32(enumValue), description)).ToList();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Utilbox.Enums
             }
             throw new ArgumentException($"Enum with display name '{displayName}' not found in {nameof(TEnum)}.", nameof(displayName));
         }
-        
+
         /// <summary>
         /// Gets the enum value based on the description attribute.
         /// </summary>
@@ -80,7 +80,7 @@ namespace Utilbox.Enums
             }
             throw new ArgumentException($"Enum with description '{description}' not found in {nameof(TEnum)}.", nameof(description));
         }
-        
+
         /// <summary>
         /// Gets the description attribute based on the display name of the enum value.
         /// </summary>
@@ -89,13 +89,20 @@ namespace Utilbox.Enums
         /// <returns>The description attribute of the enum value, or an empty string if not found.</returns>
         public static string GetDescriptionByDisplayName<TEnum>(string displayName) where TEnum : Enum
         {
-            var enumValue = GetEnumByDisplayName<TEnum>(displayName);
-            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
-            if (fieldInfo == null) return string.Empty;
-            var descriptionAttribute = fieldInfo.GetCustomAttribute<DescriptionAttribute>();
-            return descriptionAttribute != null ? descriptionAttribute.Description : string.Empty;
+            try
+            {
+                var enumValue = GetEnumByDisplayName<TEnum>(displayName);
+                var fieldInfo = typeof(TEnum).GetField(enumValue.ToString());
+                if (fieldInfo == null) return string.Empty;
+                var descriptionAttribute = fieldInfo.GetCustomAttribute<DescriptionAttribute>();
+                return descriptionAttribute != null ? descriptionAttribute.Description : string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
-        
+
         /// <summary>
         /// Gets all values of an enum type.
         /// </summary>
