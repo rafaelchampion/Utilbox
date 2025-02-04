@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-
+		
         <PackageId>Utilbox.Strings</PackageId>
         <License>MIT</License>
         <Authors>Rafael Ferreira</Authors>
@@ -27,7 +27,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0"/>
+        <PackageReference Include="System.ComponentModel.Annotations"/>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
         <None Include="..\Media\Logo.Utilbox.Strings.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
