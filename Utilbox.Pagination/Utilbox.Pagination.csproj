@@ -9,7 +9,7 @@
         <Company>RAZ Solutions</Company>
         <RepositoryUrl>https://github.com/rafaelchampion/Utilbox</RepositoryUrl>
         <PackageProjectUrl>https://github.com/rafaelchampion/Utilbox</PackageProjectUrl>
-        <PackageTags>Toolbox;utils;Utilbox;Pagination;</PackageTags>
+        <PackageTags>Toolbox;utils;Utilbox;Pagination</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Title>Utilbox.Pagination</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
@@ -27,9 +27,9 @@
         <RootNamespace>Utilbox.Pagination</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0"/>
+        <PackageReference Include="System.ComponentModel.Annotations"/>
+        <PackageReference Include="System.Runtime"/>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
         <None Include="..\Media\Logo.Utilbox.Pagination.png" Pack="true" PackagePath="\"/>
-        <PackageReference Include="System.Runtime" Version="4.3.1" />
     </ItemGroup>
 </Project>
