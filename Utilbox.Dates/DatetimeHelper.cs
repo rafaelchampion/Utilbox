@@ -163,18 +163,15 @@ namespace Utilbox.Dates
             return IsWeekend(nextDay) ? previousDay : nextDay;
         }
 
-        #endregion
-
-        #region Date Difference and Age Calculations
-
         /// <summary>
         /// Calculates the age based on the given birthdate.
         /// </summary>
         /// <param name="birthDate">The date of birth.</param>
+        /// <param name="referenceDate">The reference date to calculate the age. Defaults to today.</param>
         /// <returns>The current age in years.</returns>
-        public static int GetAge(DateTime birthDate)
+        public static int GetAge(DateTime birthDate, DateTime? referenceDate = null)
         {
-            var today = DateTime.Today;
+            var today = referenceDate ?? DateTime.Today;
             var age = today.Year - birthDate.Year;
 
             if (today < birthDate.AddYears(age))
