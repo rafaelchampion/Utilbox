@@ -53,14 +53,15 @@ public static class StringManipulationHelper
         return replacements.Aggregate(input,
             (current, replacement) => current.Replace(replacement.Key, replacement.Value));
     }
-        
+
     /// <summary>
     /// Reverses the characters in the input string.
     /// </summary>
     /// <param name="input">The string to reverse.</param>
     /// <returns>The reversed string.</returns>
-    public static string Reverse(string input)
+    public static string? Reverse(string input)
     {
+        if (input == null) return null;
         return new string(input.Reverse().ToArray());
     }
 }
