@@ -40,7 +40,7 @@ public static class StringCheckerHelper
     /// <returns>True if the string contains only digits; otherwise, false.</returns>
     public static bool ContainsOnlyDigits(string input)
     {
-        return input.All(char.IsDigit);
+        return !string.IsNullOrEmpty(input) && input.All(char.IsDigit);
     }
 
     /// <summary>
@@ -51,8 +51,20 @@ public static class StringCheckerHelper
     public static bool IsPalindrome(string input)
     {
         if (string.IsNullOrEmpty(input)) return false;
-        var reversed = new string(input.ToLower().Reverse().ToArray());
-        return input.ToLower() == reversed;
+    
+        int left = 0, right = input.Length - 1;
+        while (left < right)
+        {
+            var lChar = char.ToLowerInvariant(input[left]);
+            var rChar = char.ToLowerInvariant(input[right]);
+        
+            if (lChar != rChar) return false;
+        
+            left++;
+            right--;
+        }
+    
+        return true;
     }
 
     /// <summary>
