@@ -39,5 +39,12 @@ jobs:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       run: |
         for nupkg in $(find . -name '*.nupkg'); do
-          dotnet nuget push "$nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json;
+          PACKAGE_NAME=$(basename "$nupkg" .nupkg)
+          PACKAGE_VERSION=$(dotnet nuget list source -s https://api.nuget.org/v3/index.json | grep "$PACKAGE_NAME" | awk '{print $2}')
+          LOCAL_VERSION=$(dotnet nuget list source -s ./ | grep "$PACKAGE_NAME" | awk '{print $2}')
+          if [ "$(printf '%s\n' "$PACKAGE_VERSION" "$LOCAL_VERSION" | sort -V | head -n1)" != "$LOCAL_VERSION" ]; then
+            dotnet nuget push "$nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json;
+          else
+            echo "Skipping $nupkg as the version is not newer than the published version."
+          fi
         done
