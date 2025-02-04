@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Tests.Dates", "tests\Utilbox.Tests.Dates\Utilbox.Tests.Dates.csproj", "{437D7473-69ED-4AC0-849F-3DB6F698DA74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Tests.Strings", "Tests\Utilbox.Tests.Strings\Utilbox.Tests.Strings.csproj", "{83B58E32-6C12-46B4-ACA9-F23C86E5CAFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Tests.Strings", "tests\Utilbox.Tests.Strings\Utilbox.Tests.Strings.csproj", "{83B58E32-6C12-46B4-ACA9-F23C86E5CAFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilbox.Tests.Result", "tests\Utilbox.Tests.Result\Utilbox.Tests.Result.csproj", "{64A0FB92-FB88-4DD2-93CA-43541812D035}"
 EndProject
