@@ -12,7 +12,7 @@ public class Result
     /// <summary>
     /// Gets a boolean indicating whether the operation was successful.
     /// </summary>
-    public bool IsSuccess { get; protected set; }
+    public bool IsSuccess { get; }
 
     /// <summary>
     /// Gets a boolean indicating whether the operation was a failure.
@@ -22,26 +22,30 @@ public class Result
     /// <summary>
     /// A list of error messages. Empty if the operation was successful.
     /// </summary>
-    public IList<string>? Errors { get; protected set; }
+    public IReadOnlyList<string> Errors { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result"/> class with the specified success status and optional errors.
+    /// Gets the exception that caused the failure, if any.
+    /// </summary>
+    public Exception? Exception { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Result"/> class with the specified success status, optional errors, and optional exception.
     /// </summary>
     /// <param name="isSuccess">Indicates whether the operation was successful.</param>
     /// <param name="errors">Optional list of error messages.</param>
-    private Result(bool isSuccess, params string[] errors)
+    /// <param name="exception">Optional exception that caused the failure.</param>
+    protected Result(bool isSuccess, IEnumerable<string>? errors = null, Exception? exception = null)
     {
         IsSuccess = isSuccess;
-        Errors = errors.ToList();
+        Errors = errors?.ToList() ?? [];
+        Exception = exception;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result"/> class with no errors.
+    /// Allows implicit conversion to bool for convenience.
     /// </summary>
-    protected Result()
-    {
-        Errors = new List<string>();
-    }
+    public static implicit operator bool(Result result) => result.IsSuccess;
 
     /// <summary>
     /// Creates a successful result with no errors.
@@ -59,7 +63,7 @@ public class Result
     /// <returns>A failed <see cref="Result"/>.</returns>
     public static Result Failure(string error)
     {
-        return new Result(false, error);
+        return new Result(false, [error]);
     }
 
     /// <summary>
@@ -69,7 +73,7 @@ public class Result
     /// <returns>A failed <see cref="Result"/>.</returns>
     public static Result Failure(IEnumerable<string> errors)
     {
-        return new Result(false, errors.ToArray());
+        return new Result(false, errors);
     }
 
     /// <summary>
@@ -114,6 +118,21 @@ public class Result
     }
 
     /// <summary>
+    /// Executes an action if the result is a failure, providing the error messages.
+    /// </summary>
+    /// <param name="action">The action to execute if failed, with error messages.</param>
+    /// <returns>The current <see cref="Result"/>.</returns>
+    public Result OnFailure(Action<IReadOnlyCollection<string>> action)
+    {
+        if (IsFailure)
+        {
+            action(Errors);
+        }
+
+        return this;
+    }
+
+    /// <summary>
     /// Attempts to execute an action, returning a result based on success or failure.
     /// </summary>
     /// <param name="action">The action to execute.</param>
@@ -124,6 +143,50 @@ public class Result
         {
             action();
             return Success();
+        }
+        catch (Exception ex)
+        {
+            return Failure(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Attempts to execute an action, returning a result based on success or failure.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="errorHandler">A function to handle any exceptions.</param>
+    /// <returns>A <see cref="Result"/> representing the outcome of the action.</returns>
+    public static Result Try(Action action, Func<Exception, IEnumerable<string>> errorHandler)
+    {
+        try
+        {
+            action();
+            return Success();
+        }
+        catch (Exception ex)
+        {
+            return Failure(errorHandler(ex));
+        }
+    }
+
+    /// <summary>
+    /// Attempts to execute an action, handling specific exception types.
+    /// </summary>
+    /// <typeparam name="TException">The type of exception to handle.</typeparam>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="exceptionHandler">A function to handle the specific exception.</param>
+    /// <returns>A <see cref="Result"/> representing the outcome of the action.</returns>
+    public static Result Try<TException>(Action action, Func<TException, IEnumerable<string>> exceptionHandler)
+        where TException : Exception
+    {
+        try
+        {
+            action();
+            return Success();
+        }
+        catch (TException ex)
+        {
+            return Failure(exceptionHandler(ex));
         }
         catch (Exception ex)
         {
