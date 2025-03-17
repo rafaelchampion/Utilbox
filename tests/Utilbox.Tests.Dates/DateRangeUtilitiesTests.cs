@@ -2,18 +2,18 @@ using Utilbox.Dates;
 
 namespace Utilbox.Tests.Dates;
 
-public class DatetimeSpanHelperTests
+public class DateRangeUtilitiesTests
 {
     [Fact]
     public void CurrentDay_ReturnsCorrectSpan()
     {
         // Arrange
         var now = DateTime.UtcNow;
-        var expectedStart = DatetimeHelper.GetStartOfDay(now);
-        var expectedEnd = DatetimeHelper.GetEndOfDay(now);
+        var expectedStart = DateTimeUtilities.GetStartOfDay(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfDay(now);
 
         // Act
-        var result = DatetimeSpanHelper.CurrentDay();
+        var result = DateRangeUtilities.CurrentDay();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -25,11 +25,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow.AddDays(1);
-        var expectedStart = DatetimeHelper.GetStartOfDay(now);
-        var expectedEnd = DatetimeHelper.GetEndOfDay(now);
+        var expectedStart = DateTimeUtilities.GetStartOfDay(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfDay(now);
 
         // Act
-        var result = DatetimeSpanHelper.NextDay();
+        var result = DateRangeUtilities.NextDay();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -41,11 +41,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow.AddDays(-1);
-        var expectedStart = DatetimeHelper.GetStartOfDay(now);
-        var expectedEnd = DatetimeHelper.GetEndOfDay(now);
+        var expectedStart = DateTimeUtilities.GetStartOfDay(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfDay(now);
 
         // Act
-        var result = DatetimeSpanHelper.PreviousDay();
+        var result = DateRangeUtilities.PreviousDay();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -57,11 +57,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow;
-        var expectedStart = DatetimeHelper.GetStartOfWeek(now);
-        var expectedEnd = DatetimeHelper.GetEndOfWeek(now);
+        var expectedStart = DateTimeUtilities.GetStartOfWeek(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfWeek(now);
 
         // Act
-        var result = DatetimeSpanHelper.CurrentWeek();
+        var result = DateRangeUtilities.CurrentWeek();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -73,11 +73,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow;
-        var expectedStart = DatetimeHelper.GetStartOfMonth(now);
-        var expectedEnd = DatetimeHelper.GetEndOfMonth(now);
+        var expectedStart = DateTimeUtilities.GetStartOfMonth(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfMonth(now);
 
         // Act
-        var result = DatetimeSpanHelper.CurrentMonth();
+        var result = DateRangeUtilities.CurrentMonth();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -89,11 +89,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow.AddMonths(1);
-        var expectedStart = DatetimeHelper.GetStartOfMonth(now);
-        var expectedEnd = DatetimeHelper.GetEndOfMonth(now);
+        var expectedStart = DateTimeUtilities.GetStartOfMonth(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfMonth(now);
 
         // Act
-        var result = DatetimeSpanHelper.NextMonth();
+        var result = DateRangeUtilities.NextMonth();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -105,11 +105,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow.AddMonths(-1);
-        var expectedStart = DatetimeHelper.GetStartOfMonth(now);
-        var expectedEnd = DatetimeHelper.GetEndOfMonth(now);
+        var expectedStart = DateTimeUtilities.GetStartOfMonth(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfMonth(now);
 
         // Act
-        var result = DatetimeSpanHelper.PreviousMonth();
+        var result = DateRangeUtilities.PreviousMonth();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -121,11 +121,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow;
-        var expectedStart = DatetimeHelper.GetStartOfYear(now);
-        var expectedEnd = DatetimeHelper.GetEndOfYear(now);
+        var expectedStart = DateTimeUtilities.GetStartOfYear(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfYear(now);
 
         // Act
-        var result = DatetimeSpanHelper.CurrentYear();
+        var result = DateRangeUtilities.CurrentYear();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -137,11 +137,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow.AddYears(1);
-        var expectedStart = DatetimeHelper.GetStartOfYear(now);
-        var expectedEnd = DatetimeHelper.GetEndOfYear(now);
+        var expectedStart = DateTimeUtilities.GetStartOfYear(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfYear(now);
 
         // Act
-        var result = DatetimeSpanHelper.NextYear();
+        var result = DateRangeUtilities.NextYear();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -153,11 +153,11 @@ public class DatetimeSpanHelperTests
     {
         // Arrange
         var now = DateTime.UtcNow.AddYears(-1);
-        var expectedStart = DatetimeHelper.GetStartOfYear(now);
-        var expectedEnd = DatetimeHelper.GetEndOfYear(now);
+        var expectedStart = DateTimeUtilities.GetStartOfYear(now);
+        var expectedEnd = DateTimeUtilities.GetEndOfYear(now);
 
         // Act
-        var result = DatetimeSpanHelper.PreviousYear();
+        var result = DateRangeUtilities.PreviousYear();
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -171,10 +171,10 @@ public class DatetimeSpanHelperTests
         var year = 2023;
         var month = 5;
         var expectedStart = new DateTime(year, month, 1);
-        var expectedEnd = DatetimeHelper.GetEndOfMonth(expectedStart);
+        var expectedEnd = DateTimeUtilities.GetEndOfMonth(expectedStart);
 
         // Act
-        var result = DatetimeSpanHelper.MonthOfYear(year, month);
+        var result = DateRangeUtilities.MonthOfYear(year, month);
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -187,10 +187,10 @@ public class DatetimeSpanHelperTests
         // Arrange
         var year = 2023;
         var expectedStart = new DateTime(year, 1, 1);
-        var expectedEnd = DatetimeHelper.GetEndOfYear(expectedStart);
+        var expectedEnd = DateTimeUtilities.GetEndOfYear(expectedStart);
 
         // Act
-        var result = DatetimeSpanHelper.Year(year);
+        var result = DateRangeUtilities.Year(year);
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -201,11 +201,11 @@ public class DatetimeSpanHelperTests
     public void Overlaps_ReturnsTrueForOverlappingSpans()
     {
         // Arrange
-        var span1 = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
-        var span2 = new DatetimeSpan(new DateTime(2023, 1, 5), new DateTime(2023, 1, 15));
+        var span1 = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span2 = new DateRange(new DateTime(2023, 1, 5), new DateTime(2023, 1, 15));
 
         // Act
-        var result = DatetimeSpanHelper.Overlaps(span1, span2);
+        var result = DateRangeUtilities.Overlaps(span1, span2);
 
         // Assert
         Assert.True(result);
@@ -215,11 +215,11 @@ public class DatetimeSpanHelperTests
     public void Overlaps_ReturnsFalseForNonOverlappingSpans()
     {
         // Arrange
-        var span1 = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
-        var span2 = new DatetimeSpan(new DateTime(2023, 1, 11), new DateTime(2023, 1, 20));
+        var span1 = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span2 = new DateRange(new DateTime(2023, 1, 11), new DateTime(2023, 1, 20));
 
         // Act
-        var result = DatetimeSpanHelper.Overlaps(span1, span2);
+        var result = DateRangeUtilities.Overlaps(span1, span2);
 
         // Assert
         Assert.False(result);
@@ -229,13 +229,13 @@ public class DatetimeSpanHelperTests
     public void GetIntersection_ReturnsCorrectSpanForOverlappingSpans()
     {
         // Arrange
-        var span1 = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
-        var span2 = new DatetimeSpan(new DateTime(2023, 1, 5), new DateTime(2023, 1, 15));
+        var span1 = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span2 = new DateRange(new DateTime(2023, 1, 5), new DateTime(2023, 1, 15));
         var expectedStart = new DateTime(2023, 1, 5);
         var expectedEnd = new DateTime(2023, 1, 10);
 
         // Act
-        var result = DatetimeSpanHelper.GetIntersection(span1, span2);
+        var result = DateRangeUtilities.GetIntersection(span1, span2);
 
         // Assert
         Assert.NotNull(result);
@@ -247,11 +247,11 @@ public class DatetimeSpanHelperTests
     public void GetIntersection_ReturnsNullForNonOverlappingSpans()
     {
         // Arrange
-        var span1 = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
-        var span2 = new DatetimeSpan(new DateTime(2023, 1, 11), new DateTime(2023, 1, 20));
+        var span1 = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span2 = new DateRange(new DateTime(2023, 1, 11), new DateTime(2023, 1, 20));
 
         // Act
-        var result = DatetimeSpanHelper.GetIntersection(span1, span2);
+        var result = DateRangeUtilities.GetIntersection(span1, span2);
 
         // Assert
         Assert.Null(result);
@@ -261,17 +261,17 @@ public class DatetimeSpanHelperTests
     public void MergeSpans_ReturnsCorrectMergedSpan()
     {
         // Arrange
-        var spans = new List<DatetimeSpan>
+        var spans = new List<DateRange>
         {
-            new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10)),
-            new DatetimeSpan(new DateTime(2023, 1, 5), new DateTime(2023, 1, 15)),
-            new DatetimeSpan(new DateTime(2023, 1, 20), new DateTime(2023, 1, 25))
+            new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10)),
+            new DateRange(new DateTime(2023, 1, 5), new DateTime(2023, 1, 15)),
+            new DateRange(new DateTime(2023, 1, 20), new DateTime(2023, 1, 25))
         };
         var expectedStart = new DateTime(2023, 1, 1);
         var expectedEnd = new DateTime(2023, 1, 25);
 
         // Act
-        var result = DatetimeSpanHelper.MergeSpans(spans);
+        var result = DateRangeUtilities.MergeSpans(spans);
 
         // Assert
         Assert.Equal(expectedStart, result.Start);
@@ -282,21 +282,21 @@ public class DatetimeSpanHelperTests
     public void SplitSpan_ReturnsCorrectIntervals()
     {
         // Arrange
-        var span = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
         var intervalCount = 3;
-        var expectedIntervals = new List<DatetimeSpan>
+        var expectedIntervals = new List<DateRange>
         {
-            new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 4)),
-            new DatetimeSpan(new DateTime(2023, 1, 4), new DateTime(2023, 1, 7)),
-            new DatetimeSpan(new DateTime(2023, 1, 7), new DateTime(2023, 1, 10))
+            new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 4)),
+            new DateRange(new DateTime(2023, 1, 4), new DateTime(2023, 1, 7)),
+            new DateRange(new DateTime(2023, 1, 7), new DateTime(2023, 1, 10))
         };
 
         // Act
-        var result = DatetimeSpanHelper.SplitSpan(span, intervalCount).ToList();
+        var result = DateRangeUtilities.SplitSpan(span, intervalCount).ToList();
 
         // Assert
         Assert.Equal(expectedIntervals.Count, result.Count);
-        for (int i = 0; i < expectedIntervals.Count; i++)
+        for (var i = 0; i < expectedIntervals.Count; i++)
         {
             Assert.Equal(expectedIntervals[i].Start, result[i].Start);
             Assert.Equal(expectedIntervals[i].End, result[i].End);
@@ -309,19 +309,19 @@ public class DatetimeSpanHelperTests
         // Arrange
         var startDate = new DateTime(2023, 1, 1);
         var count = 3;
-        var expectedSpans = new List<DatetimeSpan>
+        var expectedSpans = new List<DateRange>
         {
-            new DatetimeSpan(DatetimeHelper.GetStartOfDay(startDate), DatetimeHelper.GetEndOfDay(startDate)),
-            new DatetimeSpan(DatetimeHelper.GetStartOfDay(startDate.AddDays(1)), DatetimeHelper.GetEndOfDay(startDate.AddDays(1))),
-            new DatetimeSpan(DatetimeHelper.GetStartOfDay(startDate.AddDays(2)), DatetimeHelper.GetEndOfDay(startDate.AddDays(2)))
+            new DateRange(DateTimeUtilities.GetStartOfDay(startDate), DateTimeUtilities.GetEndOfDay(startDate)),
+            new DateRange(DateTimeUtilities.GetStartOfDay(startDate.AddDays(1)), DateTimeUtilities.GetEndOfDay(startDate.AddDays(1))),
+            new DateRange(DateTimeUtilities.GetStartOfDay(startDate.AddDays(2)), DateTimeUtilities.GetEndOfDay(startDate.AddDays(2)))
         };
 
         // Act
-        var result = DatetimeSpanHelper.GenerateDailySpans(startDate, count).ToList();
+        var result = DateRangeUtilities.GenerateDailySpans(startDate, count).ToList();
 
         // Assert
         Assert.Equal(expectedSpans.Count, result.Count);
-        for (int i = 0; i < expectedSpans.Count; i++)
+        for (var i = 0; i < expectedSpans.Count; i++)
         {
             Assert.Equal(expectedSpans[i].Start, result[i].Start);
             Assert.Equal(expectedSpans[i].End, result[i].End);
@@ -334,19 +334,19 @@ public class DatetimeSpanHelperTests
         // Arrange
         var startDate = new DateTime(2023, 1, 1);
         var count = 3;
-        var expectedSpans = new List<DatetimeSpan>
+        var expectedSpans = new List<DateRange>
         {
-            new DatetimeSpan(DatetimeHelper.GetStartOfWeek(startDate), DatetimeHelper.GetEndOfWeek(startDate)),
-            new DatetimeSpan(DatetimeHelper.GetStartOfWeek(startDate.AddWeeks(1)), DatetimeHelper.GetEndOfWeek(startDate.AddWeeks(1))),
-            new DatetimeSpan(DatetimeHelper.GetStartOfWeek(startDate.AddWeeks(2)), DatetimeHelper.GetEndOfWeek(startDate.AddWeeks(2)))
+            new DateRange(DateTimeUtilities.GetStartOfWeek(startDate), DateTimeUtilities.GetEndOfWeek(startDate)),
+            new DateRange(DateTimeUtilities.GetStartOfWeek(startDate.AddWeeks(1)), DateTimeUtilities.GetEndOfWeek(startDate.AddWeeks(1))),
+            new DateRange(DateTimeUtilities.GetStartOfWeek(startDate.AddWeeks(2)), DateTimeUtilities.GetEndOfWeek(startDate.AddWeeks(2)))
         };
 
         // Act
-        var result = DatetimeSpanHelper.GenerateWeeklySpans(startDate, count).ToList();
+        var result = DateRangeUtilities.GenerateWeeklySpans(startDate, count).ToList();
 
         // Assert
         Assert.Equal(expectedSpans.Count, result.Count);
-        for (int i = 0; i < expectedSpans.Count; i++)
+        for (var i = 0; i < expectedSpans.Count; i++)
         {
             Assert.Equal(expectedSpans[i].Start, result[i].Start);
             Assert.Equal(expectedSpans[i].End, result[i].End);
@@ -359,19 +359,19 @@ public class DatetimeSpanHelperTests
         // Arrange
         var startDate = new DateTime(2023, 1, 1);
         var count = 3;
-        var expectedSpans = new List<DatetimeSpan>
+        var expectedSpans = new List<DateRange>
         {
-            new DatetimeSpan(DatetimeHelper.GetStartOfMonth(startDate), DatetimeHelper.GetEndOfMonth(startDate)),
-            new DatetimeSpan(DatetimeHelper.GetStartOfMonth(startDate.AddMonths(1)), DatetimeHelper.GetEndOfMonth(startDate.AddMonths(1))),
-            new DatetimeSpan(DatetimeHelper.GetStartOfMonth(startDate.AddMonths(2)), DatetimeHelper.GetEndOfMonth(startDate.AddMonths(2)))
+            new DateRange(DateTimeUtilities.GetStartOfMonth(startDate), DateTimeUtilities.GetEndOfMonth(startDate)),
+            new DateRange(DateTimeUtilities.GetStartOfMonth(startDate.AddMonths(1)), DateTimeUtilities.GetEndOfMonth(startDate.AddMonths(1))),
+            new DateRange(DateTimeUtilities.GetStartOfMonth(startDate.AddMonths(2)), DateTimeUtilities.GetEndOfMonth(startDate.AddMonths(2)))
         };
 
         // Act
-        var result = DatetimeSpanHelper.GenerateMonthlySpans(startDate, count).ToList();
+        var result = DateRangeUtilities.GenerateMonthlySpans(startDate, count).ToList();
 
         // Assert
         Assert.Equal(expectedSpans.Count, result.Count);
-        for (int i = 0; i < expectedSpans.Count; i++)
+        for (var i = 0; i < expectedSpans.Count; i++)
         {
             Assert.Equal(expectedSpans[i].Start, result[i].Start);
             Assert.Equal(expectedSpans[i].End, result[i].End);
@@ -382,11 +382,11 @@ public class DatetimeSpanHelperTests
     public void GetDuration_ReturnsCorrectDuration()
     {
         // Arrange
-        var span = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
         var expectedDuration = new TimeSpan(9, 0, 0, 0);
 
         // Act
-        var result = DatetimeSpanHelper.GetDuration(span);
+        var result = DateRangeUtilities.GetDuration(span);
 
         // Assert
         Assert.Equal(expectedDuration, result);
@@ -396,12 +396,12 @@ public class DatetimeSpanHelperTests
     public void ExtendSpan_ExtendsEndCorrectly()
     {
         // Arrange
-        var span = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
         var extensionDuration = new TimeSpan(5, 0, 0, 0);
         var expectedEnd = new DateTime(2023, 1, 15);
 
         // Act
-        var result = DatetimeSpanHelper.ExtendSpan(span, extensionDuration);
+        var result = DateRangeUtilities.ExtendSpan(span, extensionDuration);
 
         // Assert
         Assert.Equal(span.Start, result.Start);
@@ -412,12 +412,12 @@ public class DatetimeSpanHelperTests
     public void ExtendSpan_ExtendsStartCorrectly()
     {
         // Arrange
-        var span = new DatetimeSpan(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
+        var span = new DateRange(new DateTime(2023, 1, 1), new DateTime(2023, 1, 10));
         var extensionDuration = new TimeSpan(5, 0, 0, 0);
         var expectedStart = new DateTime(2022, 12, 27);
 
         // Act
-        var result = DatetimeSpanHelper.ExtendSpan(span, extensionDuration, extendEnd: false);
+        var result = DateRangeUtilities.ExtendSpan(span, extensionDuration, extendEnd: false);
 
         // Assert
         Assert.Equal(expectedStart, result.Start);

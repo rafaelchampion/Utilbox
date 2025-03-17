@@ -4,7 +4,7 @@ using Utilbox.Enums;
 
 namespace Utilbox.Tests.Enums;
 
-public class EnumHelperTests
+public class EnumUtilitiesTests
 {
     private enum TestEnum
     {
@@ -31,13 +31,13 @@ public class EnumHelperTests
     [Fact]
     public void IsValidEnumValue_ValidValue_ReturnsTrue()
     {
-        Assert.True(EnumHelper.IsValidEnumValue<TestEnum>(1));
+        Assert.True(EnumUtilities.IsValidEnumValue<TestEnum>(1));
     }
 
     [Fact]
     public void IsValidEnumValue_InvalidValue_ReturnsFalse()
     {
-        Assert.False(EnumHelper.IsValidEnumValue<TestEnum>(99));
+        Assert.False(EnumUtilities.IsValidEnumValue<TestEnum>(99));
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class EnumHelperTests
         new(3, "Third Value")
     };
 
-        var result = EnumHelper.GetEnumValuesWithDescriptions<TestEnum>();
+        var result = EnumUtilities.GetEnumValuesWithDescriptions<TestEnum>();
 
         Assert.Equal(expected, result);
     }
@@ -58,40 +58,40 @@ public class EnumHelperTests
     [Fact]
     public void GetEnumByDisplayName_ValidDisplayName_ReturnsCorrectEnum()
     {
-        var result = EnumHelper.GetEnumByDisplayName<TestEnum>("Third");
+        var result = EnumUtilities.GetEnumByDisplayName<TestEnum>("Third");
         Assert.Equal(TestEnum.Third, result);
     }
 
     [Fact]
     public void GetEnumByDisplayName_InvalidDisplayName_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => EnumHelper.GetEnumByDisplayName<TestEnum>("Invalid"));
+        Assert.Throws<ArgumentException>(() => EnumUtilities.GetEnumByDisplayName<TestEnum>("Invalid"));
     }
 
     [Fact]
     public void GetEnumByDescription_ValidDescription_ReturnsCorrectEnum()
     {
-        var result = EnumHelper.GetEnumByDescription<TestEnum>("First Value");
+        var result = EnumUtilities.GetEnumByDescription<TestEnum>("First Value");
         Assert.Equal(TestEnum.First, result);
     }
 
     [Fact]
     public void GetEnumByDescription_InvalidDescription_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => EnumHelper.GetEnumByDescription<TestEnum>("Invalid"));
+        Assert.Throws<ArgumentException>(() => EnumUtilities.GetEnumByDescription<TestEnum>("Invalid"));
     }
 
     [Fact]
     public void GetDescriptionByDisplayName_ValidDisplayName_ReturnsCorrectDescription()
     {
-        var result = EnumHelper.GetDescriptionByDisplayName<TestEnum>("Third");
+        var result = EnumUtilities.GetDescriptionByDisplayName<TestEnum>("Third");
         Assert.Equal("Third Value", result);
     }
 
     [Fact]
     public void GetDescriptionByDisplayName_InvalidDisplayName_ReturnsEmptyString()
     {
-        var result = EnumHelper.GetDescriptionByDisplayName<TestEnum>("Invalid");
+        var result = EnumUtilities.GetDescriptionByDisplayName<TestEnum>("Invalid");
         Assert.Equal(string.Empty, result);
     }
 
@@ -99,21 +99,21 @@ public class EnumHelperTests
     public void GetAllValues_ReturnsAllEnumValues()
     {
         var expected = new[] { TestEnum.First, TestEnum.Second, TestEnum.Third };
-        var result = EnumHelper.GetAllValues<TestEnum>();
+        var result = EnumUtilities.GetAllValues<TestEnum>();
         Assert.Equal(expected, result);
     }
 
     [Fact]
     public void ParseEnum_ValidString_ReturnsCorrectEnum()
     {
-        var result = EnumHelper.ParseEnum<TestEnum>("First");
+        var result = EnumUtilities.ParseEnum<TestEnum>("First");
         Assert.Equal(TestEnum.First, result);
     }
 
     [Fact]
     public void ParseEnum_InvalidString_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => EnumHelper.ParseEnum<TestEnum>("Invalid"));
+        Assert.Throws<ArgumentException>(() => EnumUtilities.ParseEnum<TestEnum>("Invalid"));
     }
 
     [Fact]
@@ -126,7 +126,7 @@ public class EnumHelperTests
         { TestEnum.Third, "Third" }
     };
 
-        var result = EnumHelper.GetEnumDisplayNames<TestEnum>();
+        var result = EnumUtilities.GetEnumDisplayNames<TestEnum>();
 
         Assert.Equal(expected, result);
     }
@@ -141,7 +141,7 @@ public class EnumHelperTests
         { TestEnum.Third, "Third Value" }
     };
 
-        var result = EnumHelper.GetEnumDescriptions<TestEnum>();
+        var result = EnumUtilities.GetEnumDescriptions<TestEnum>();
 
         Assert.Equal(expected, result);
     }
@@ -149,14 +149,14 @@ public class EnumHelperTests
     [Fact]
     public void CombineFlags_ValidFlags_ReturnsCombinedFlag()
     {
-        var result = EnumHelper.CombineFlags(TestFlagsEnum.Flag1, TestFlagsEnum.Flag2);
+        var result = EnumUtilities.CombineFlags(TestFlagsEnum.Flag1, TestFlagsEnum.Flag2);
         Assert.Equal(TestFlagsEnum.Flag1 | TestFlagsEnum.Flag2, result);
     }
 
     [Fact]
     public void CombineFlags_EnumWithoutFlagsAttribute_ThrowsInvalidOperationException()
     {
-        Assert.Throws<InvalidOperationException>(() => EnumHelper.CombineFlags(TestEnum.First, TestEnum.Second));
+        Assert.Throws<InvalidOperationException>(() => EnumUtilities.CombineFlags(TestEnum.First, TestEnum.Second));
     }
 
     [Fact]

@@ -1,5 +1,3 @@
-using Utilbox.Result;
-
 namespace Utilbox.Tests.Result;
 
 public class ResultTests
@@ -60,6 +58,19 @@ public class ResultTests
         Assert.False(combinedResult.IsSuccess);
         Assert.True(combinedResult.IsFailure);
         Assert.Contains("Error 1", combinedResult.Errors);
+        Assert.Contains("Error 2", combinedResult.Errors);
+    }
+
+    [Fact]
+    public void Combine_WithMixedResults_ShouldReturnFailedResult()
+    {
+        var result1 = Utilbox.Result.Result.Success();
+        var result2 = Utilbox.Result.Result.Failure("Error 2");
+
+        var combinedResult = Utilbox.Result.Result.Combine(result1, result2);
+
+        Assert.False(combinedResult.IsSuccess);
+        Assert.True(combinedResult.IsFailure);
         Assert.Contains("Error 2", combinedResult.Errors);
     }
 
@@ -126,5 +137,69 @@ public class ResultTests
         Assert.False(result.IsSuccess);
         Assert.True(result.IsFailure);
         Assert.Single(result.Errors, exceptionMessage);
+    }
+
+    [Fact]
+    public void Success_WithValue_ShouldReturnSuccessfulResultWithValue()
+    {
+        var value = 42;
+        var result = Utilbox.Result.Result<int>.Success(value);
+
+        Assert.True(result.IsSuccess);
+        Assert.False(result.IsFailure);
+        Assert.Equal(value, result.Value);
+        Assert.Empty(result.Errors);
+    }
+
+    [Fact]
+    public void Failure_WithValue_ShouldReturnFailedResultWithErrors()
+    {
+        var errors = new List<string> { "Error 1", "Error 2" };
+        var result = Utilbox.Result.Result<int>.Failure(errors);
+
+        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
+        Assert.Equal(default(int), result.Value);
+        Assert.Equal(errors, result.Errors);
+    }
+
+    [Fact]
+    public void Combine_WithAllSuccessfulResults_ShouldReturnSuccessfulResultWithValues()
+    {
+        var result1 = Utilbox.Result.Result<int>.Success(1);
+        var result2 = Utilbox.Result.Result<int>.Success(2);
+
+        var combinedResult = Utilbox.Result.Result.Combine(result1, result2);
+
+        Assert.True(combinedResult.IsSuccess);
+        Assert.False(combinedResult.IsFailure);
+        Assert.Empty(combinedResult.Errors);
+    }
+
+    [Fact]
+    public void Combine_WithFailedResults_ShouldReturnFailedResultWithErrors()
+    {
+        var result1 = Utilbox.Result.Result<int>.Failure("Error 1");
+        var result2 = Utilbox.Result.Result<int>.Failure("Error 2");
+
+        var combinedResult = Utilbox.Result.Result.Combine(result1, result2);
+
+        Assert.False(combinedResult.IsSuccess);
+        Assert.True(combinedResult.IsFailure);
+        Assert.Contains("Error 1", combinedResult.Errors);
+        Assert.Contains("Error 2", combinedResult.Errors);
+    }
+
+    [Fact]
+    public void Combine_WithMixedResults_ShouldReturnFailedResultWithErrors()
+    {
+        var result1 = Utilbox.Result.Result<int>.Success(1);
+        var result2 = Utilbox.Result.Result<int>.Failure("Error 2");
+
+        var combinedResult = Utilbox.Result.Result.Combine(result1, result2);
+
+        Assert.False(combinedResult.IsSuccess);
+        Assert.True(combinedResult.IsFailure);
+        Assert.Contains("Error 2", combinedResult.Errors);
     }
 }
