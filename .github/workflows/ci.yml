@@ -26,6 +26,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
+    - name: Set UTF-8 encoding
+      run: echo "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0" >> $GITHUB_ENV
+
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
