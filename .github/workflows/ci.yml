@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch: # Enables manual triggering
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,36 +36,29 @@ jobs:
       run: dotnet pack --no-build --configuration Release
 
     - name: Publish NuGet packages
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       run: |
         echo "Publishing NuGet packages if version is newer..."
         for nupkg in $(find . -name '*.nupkg'); do
-          # Extract filename (without extension)
           filename=$(basename "$nupkg" .nupkg)
-          
-          # Assume filename format: PackageName.Version (e.g., Utilbox.Dates.1.2.3)
-          # Use regex to split the package name and version.
           PACKAGE_NAME=$(echo "$filename" | sed -E 's/(.*)\.[0-9]+(\.[0-9]+)*$/\1/')
           LOCAL_VERSION=$(echo "$filename" | sed -E 's/.*\.(([0-9]+)(\.[0-9]+)*$)/\1/')
           
           echo "Processing package: $PACKAGE_NAME, local version: $LOCAL_VERSION"
           
-          # NuGet flat container requires lowercase package id.
           lowerName=$(echo "$PACKAGE_NAME" | tr '[:upper:]' '[:lower:]')
           url="https://api.nuget.org/v3-flatcontainer/${lowerName}/index.json"
           
           response=$(curl -s $url)
           PUBLISHED_VERSION=$(echo "$response" | jq -r '.versions[-1]')
           
-          # If no version is found (package not published yet), push the package.
           if [ "$PUBLISHED_VERSION" = "null" ] || [ -z "$PUBLISHED_VERSION" ]; then
             echo "Package $PACKAGE_NAME not yet published. Pushing..."
             dotnet nuget push "$nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json
           else
             echo "Published version of $PACKAGE_NAME: $PUBLISHED_VERSION"
-            # Compare versions (sort -V sorts version numbers correctly)
             if [ "$(printf '%s\n' "$PUBLISHED_VERSION" "$LOCAL_VERSION" | sort -V | head -n1)" != "$LOCAL_VERSION" ]; then
               echo "Local version $LOCAL_VERSION is newer than published version $PUBLISHED_VERSION. Pushing..."
               dotnet nuget push "$nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json
