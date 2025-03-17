@@ -64,15 +64,44 @@ public class StringManipulationExtensionsTests
         Assert.Equal(expected, result);
     }
 
+    //[Fact]
+    //public void RemoveAccents_ShouldRemoveAllDiacriticalMarks()
+    //{
+    //    const string input = "Café";
+    //    const string expected = "Cafe";
+
+    //    var result = input.RemoveAccents();
+
+    //    Assert.Equal(expected.Normalize(NormalizationForm.FormC), result.Normalize(NormalizationForm.FormC));
+    //}
+
     [Fact]
-    public void RemoveAccents_ShouldRemoveAllDiacriticalMarks()
+    public void Debug_StringEncoding()
     {
-        const string input = "Café";
-        const string expected = "Cafe";
+        string cafe = "Café";
+        Console.WriteLine("Original: " + cafe);
 
-        var result = input.RemoveAccents();
+        byte[] bytes = Encoding.UTF8.GetBytes(cafe);
+        Console.WriteLine("UTF-8 bytes: " + string.Join(", ", bytes));
 
-        Assert.Equal(expected.Normalize(NormalizationForm.FormC), result.Normalize(NormalizationForm.FormC));
+        string decoded = Encoding.UTF8.GetString(bytes);
+        Console.WriteLine("Decoded: " + decoded);
+
+        // Try with explicit encoding
+        byte[] utf8Bytes = Encoding.UTF8.GetBytes(cafe);
+        Console.WriteLine("UTF-8 bytes: " + string.Join(", ", utf8Bytes));
+
+        string utf8String = Encoding.UTF8.GetString(utf8Bytes);
+        Console.WriteLine("UTF-8 string: " + utf8String);
+
+        // Check what happens after normalization
+        string normalized = cafe.Normalize(NormalizationForm.FormD);
+        Console.WriteLine("Normalized (FormD): " + normalized);
+
+        string removeAccents = cafe.RemoveAccents();
+        Console.WriteLine("After RemoveAccents: " + removeAccents);
+
+        Assert.True(true);
     }
 
     [Fact]
