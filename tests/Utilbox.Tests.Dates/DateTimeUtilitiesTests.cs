@@ -98,7 +98,7 @@ public class DateTimeUtilitiesTests
     {
         var date = new DateTime(2023, 12, 25);
         var holidays = new List<DateTime> { new DateTime(2023, 12, 25) };
-        var result = DateTimeUtilities.IsHoliday(date, holidays);
+        var result = date.IsHoliday(holidays);
         Assert.True(result);
     }
 
@@ -107,7 +107,7 @@ public class DateTimeUtilitiesTests
     {
         var date = new DateTime(2023, 12, 24);
         var holidays = new List<DateTime> { new DateTime(2023, 12, 25) };
-        var result = DateTimeUtilities.IsHoliday(date, holidays);
+        var result = date.IsHoliday(holidays);
         Assert.False(result);
     }
 
@@ -150,7 +150,7 @@ public class DateTimeUtilitiesTests
     public void IsWeekend_ShouldReturnTrueIfDateIsWeekend()
     {
         var date = new DateTime(2023, 1, 7); // Saturday
-        var result = DateTimeUtilities.IsWeekend(date);
+        var result = date.IsWeekend();
         Assert.True(result);
     }
 
@@ -158,7 +158,7 @@ public class DateTimeUtilitiesTests
     public void IsWeekend_ShouldReturnFalseIfDateIsNotWeekend()
     {
         var date = new DateTime(2023, 1, 6); // Friday
-        var result = DateTimeUtilities.IsWeekend(date);
+        var result = date.IsWeekend();
         Assert.False(result);
     }
 }
