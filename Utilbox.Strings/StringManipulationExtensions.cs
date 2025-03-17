@@ -49,22 +49,23 @@ public static class StringManipulationExtensions
     /// </summary>
     /// <param name="input">The input string.</param>
     /// <returns>The string without accents.</returns>
-    public static string RemoveAccents(this string input)
+    public static string RemoveAccents(this string text)
     {
-        if (string.IsNullOrWhiteSpace(input))
-            return input;
+        if (string.IsNullOrEmpty(text))
+            return text;
 
-        var normalizedString = input.Normalize(NormalizationForm.FormD);
-        var stringBuilder = new StringBuilder();
-
-        foreach (var c in normalizedString)
+        string normalizedString = text.Normalize(NormalizationForm.FormD);
+        var result = new StringBuilder();
+        foreach (char c in normalizedString)
         {
-            if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+            UnicodeCategory unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+
+            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
             {
-                stringBuilder.Append(c);
+                result.Append(c);
             }
         }
-        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        return result.ToString().Normalize(NormalizationForm.FormC);
     }
 
     /// <summary>
