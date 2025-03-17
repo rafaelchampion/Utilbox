@@ -1,3 +1,4 @@
+using System.Text;
 using Utilbox.Strings;
 
 namespace Utilbox.Tests.Strings;
@@ -71,7 +72,7 @@ public class StringManipulationExtensionsTests
 
         var result = input.RemoveAccents();
 
-        Assert.Equal(expected, result);
+        Assert.Equal(expected.Normalize(NormalizationForm.FormC), result.Normalize(NormalizationForm.FormC));
     }
 
     [Fact]
