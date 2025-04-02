@@ -51,8 +51,8 @@ jobs:
         echo "Publishing NuGet packages if version is newer..."
         for nupkg in $(find . -name '*.nupkg'); do
           filename=$(basename "$nupkg" .nupkg)
-          PACKAGE_NAME=$(echo "$filename" | sed -E 's/(.*)\.[0-9]+(\.[0-9]+)*$/\1/')
-          LOCAL_VERSION=$(echo "$filename" | sed -E 's/.*\.(([0-9]+)(\.[0-9]+)*$)/\1/')
+          PACKAGE_NAME=$(echo "$filename" | sed -E 's/(.+)\.[0-9]+\.[0-9]+\.[0-9]+$/\1/')
+          LOCAL_VERSION=$(echo "$filename" | sed -E 's/.*\.([0-9]+\.[0-9]+\.[0-9]+)$/\1/')
           
           echo "Processing package: $PACKAGE_NAME, local version: $LOCAL_VERSION"
           
@@ -60,7 +60,7 @@ jobs:
           url="https://api.nuget.org/v3-flatcontainer/${lowerName}/index.json"
           
           response=$(curl -s $url)
-          PUBLISHED_VERSION=$(echo "$response" | jq -r '.versions[-1]')
+          PUBLISHED_VERSION=$(echo "$response" | jq -r '.versions | last // empty')
           
           if [ "$PUBLISHED_VERSION" = "null" ] || [ -z "$PUBLISHED_VERSION" ]; then
             echo "Package $PACKAGE_NAME not yet published. Pushing..."
