@@ -59,11 +59,26 @@ jobs:
           lowerName=$(echo "$PACKAGE_NAME" | tr '[:upper:]' '[:lower:]')
           url="https://api.nuget.org/v3-flatcontainer/${lowerName}/index.json"
           
-          response=$(curl -s $url)
-          PUBLISHED_VERSION=$(echo "$response" | jq -r '.versions | last // empty')
-          
-          if [ "$PUBLISHED_VERSION" = "null" ] || [ -z "$PUBLISHED_VERSION" ]; then
-            echo "Package $PACKAGE_NAME not yet published. Pushing..."
+          response=$(curl -s -o response.json -w "%{http_code}" "$url")
+          http_code=$(tail -n1 response.json)
+          json_response=$(head -n -1 response.json)
+
+          if [ "$http_code" -eq 404 ]; then
+            echo "Package $PACKAGE_NAME does not exist on NuGet. Pushing..."
+            dotnet nuget push "$nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json
+            continue
+          fi
+
+          # Check if response is valid JSON
+          if ! echo "$json_response" | jq empty 2>/dev/null; then
+            echo "Error: Invalid response from NuGet API for package $PACKAGE_NAME (HTTP $http_code)"
+            continue
+          fi
+
+          PUBLISHED_VERSION=$(echo "$json_response" | jq -r '.versions | last // empty')
+
+          if [ -z "$PUBLISHED_VERSION" ] || [ "$PUBLISHED_VERSION" = "null" ]; then
+            echo "No published versions found for $PACKAGE_NAME. Pushing..."
             dotnet nuget push "$nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json
           else
             echo "Published version of $PACKAGE_NAME: $PUBLISHED_VERSION"
