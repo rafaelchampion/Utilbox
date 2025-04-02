@@ -75,34 +75,34 @@ public class StringManipulationExtensionsTests
     //    Assert.Equal(expected.Normalize(NormalizationForm.FormC), result.Normalize(NormalizationForm.FormC));
     //}
 
-    [Fact]
-    public void Debug_StringEncoding()
-    {
-        string cafe = "Café";
-        Console.WriteLine("Original: " + cafe);
+    //[Fact]
+    //public void Debug_StringEncoding()
+    //{
+    //    string cafe = "Café";
+    //    Console.WriteLine("Original: " + cafe);
 
-        byte[] bytes = Encoding.UTF8.GetBytes(cafe);
-        Console.WriteLine("UTF-8 bytes: " + string.Join(", ", bytes));
+    //    byte[] bytes = Encoding.UTF8.GetBytes(cafe);
+    //    Console.WriteLine("UTF-8 bytes: " + string.Join(", ", bytes));
 
-        string decoded = Encoding.UTF8.GetString(bytes);
-        Console.WriteLine("Decoded: " + decoded);
+    //    string decoded = Encoding.UTF8.GetString(bytes);
+    //    Console.WriteLine("Decoded: " + decoded);
 
-        // Try with explicit encoding
-        byte[] utf8Bytes = Encoding.UTF8.GetBytes(cafe);
-        Console.WriteLine("UTF-8 bytes: " + string.Join(", ", utf8Bytes));
+    //    // Try with explicit encoding
+    //    byte[] utf8Bytes = Encoding.UTF8.GetBytes(cafe);
+    //    Console.WriteLine("UTF-8 bytes: " + string.Join(", ", utf8Bytes));
 
-        string utf8String = Encoding.UTF8.GetString(utf8Bytes);
-        Console.WriteLine("UTF-8 string: " + utf8String);
+    //    string utf8String = Encoding.UTF8.GetString(utf8Bytes);
+    //    Console.WriteLine("UTF-8 string: " + utf8String);
 
-        // Check what happens after normalization
-        string normalized = cafe.Normalize(NormalizationForm.FormD);
-        Console.WriteLine("Normalized (FormD): " + normalized);
+    //    // Check what happens after normalization
+    //    string normalized = cafe.Normalize(NormalizationForm.FormD);
+    //    Console.WriteLine("Normalized (FormD): " + normalized);
 
-        string removeAccents = cafe.RemoveAccents();
-        Console.WriteLine("After RemoveAccents: " + removeAccents);
+    //    string removeAccents = cafe.RemoveAccents();
+    //    Console.WriteLine("After RemoveAccents: " + removeAccents);
 
-        Assert.True(true);
-    }
+    //    Assert.True(true);
+    //}
 
     [Fact]
     public void RemoveNonAlphanumeric_ShouldRemoveAllNonAlphanumericCharacters()

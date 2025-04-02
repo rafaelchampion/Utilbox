@@ -14,6 +14,7 @@ Utilbox is a modular collection of C# utility libraries designed to simplify com
 | -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `Utilbox.Dates`      | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Dates)      | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Dates)      |
 | `Utilbox.Enums`      | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Enums)      | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Enums)      |
+| `Utilbox.Response`   | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Response)   | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Response)   |
 | `Utilbox.Result`     | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Result)     | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Result)     |
 | `Utilbox.Strings`    | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Strings)    | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Strings)    |
 | `Utilbox.Pagination` | ![NuGet Version](https://img.shields.io/nuget/v/Utilbox.Pagination) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Utilbox.Pagination) |
@@ -33,6 +34,13 @@ Provides methods and types for working with dates and date ranges.
 Offers robust extensions for enum types, including:  
 - Display and description retrieval via custom attributes  
 - Parsing, flag manipulation, and conversion helpers
+
+### Utilbox.Response
+Provides standardized response classes for RESTful API endpoints, ensuring consistent structure and behavior across different API implementations.
+- **ApiResponse<T>** – A standardized response class for API endpoints, including properties for success status, HTTP status code, data, error messages, validation errors, metadata, and timestamp.
+- **OperationValidationError** – Represents a validation error for a specific field, including properties for the field name, error message, and error code.
+- **PaginationMetadata** – Represents pagination metadata for API responses, including properties for total items, page size, current page, total pages, and indicators for previous and next pages.
+
 
 ### Utilbox.Result
 Implements the [Result pattern](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-design-patterns#result-pattern) for error handling and operation outcomes.  
@@ -68,6 +76,7 @@ Install-Package Utilbox.Enums
 Install-Package Utilbox.Strings
 Install-Package Utilbox.Pagination
 Install-Package Utilbox.Result
+Install-Package Utilbox.Response
 ```
 
 Using the .NET CLI:
@@ -78,6 +87,7 @@ dotnet add package Utilbox.Enums
 dotnet add package Utilbox.Strings
 dotnet add package Utilbox.Pagination
 dotnet add package Utilbox.Result
+dotnet add package Utilbox.Response
 ```
 
 ## Contributing
