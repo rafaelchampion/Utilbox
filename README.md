@@ -1,6 +1,6 @@
 # Utilbox 🛠️
 
-![UtilboxLogo](https://github.com/user-attachments/assets/264e82b1-f31d-4760-8de9-a6bb1fa1b492)
+![UtilboxLogo](https://i.imgur.com/U9YNvxw.png)
 
 Utilbox is a modular collection of C# utility libraries designed to simplify common development tasks. With separate packages for handling dates, enums, results, strings, and pagination, Utilbox helps you write cleaner, more maintainable code without reinventing the wheel.
 
