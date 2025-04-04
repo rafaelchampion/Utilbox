@@ -1,6 +1,6 @@
 using Utilbox.Result;
 
-namespace Utilbox.Tests.Results;
+namespace Utilbox.Tests.Result;
 
 public class ResultExtensionsTests
 {
@@ -17,11 +17,13 @@ public class ResultExtensionsTests
     [Fact]
     public void Chain_FailedResult_ReturnsOriginalFailure()
     {
-        var initialResult = Result<int>.Failure("Initial error");
+        var error = Error.Validation("InitialError", "Initial error");
+        var initialResult = Result<int>.Failure(error);
         var chainedResult = initialResult.Chain(value => Result<string>.Success(value.ToString()));
 
         Assert.True(chainedResult.IsFailure);
-        Assert.Equal("Initial error", chainedResult.Errors[0]);
+        Assert.Equal(error, chainedResult.Error);
+        Assert.Equal(ErrorType.Validation, chainedResult.ErrorType);
     }
 
     [Fact]
@@ -37,11 +39,13 @@ public class ResultExtensionsTests
     [Fact]
     public async Task ChainAsync_FailedResult_ReturnsOriginalFailure()
     {
-        var initialResult = Result<int>.Failure("Initial error");
+        var error = Error.Validation("InitialError", "Initial error");
+        var initialResult = Result<int>.Failure(error);
         var chainedResult = await initialResult.ChainAsync(async value => await Task.FromResult(Result<string>.Success(value.ToString())));
 
         Assert.True(chainedResult.IsFailure);
-        Assert.Equal("Initial error", chainedResult.Errors[0]);
+        Assert.Equal(error, chainedResult.Error);
+        Assert.Equal(ErrorType.Validation, chainedResult.ErrorType);
     }
 
     [Fact]
@@ -57,11 +61,13 @@ public class ResultExtensionsTests
     [Fact]
     public void OnSuccess_FailedResult_ReturnsOriginalFailure()
     {
-        var initialResult = Result<int>.Failure("Initial error");
+        var error = Error.Validation("InitialError", "Initial error");
+        var initialResult = Result<int>.Failure(error);
         var transformedResult = initialResult.OnSuccess(value => value.ToString());
 
         Assert.True(transformedResult.IsFailure);
-        Assert.Equal("Initial error", transformedResult.Errors[0]);
+        Assert.Equal(error, transformedResult.Error);
+        Assert.Equal(ErrorType.Validation, transformedResult.ErrorType);
     }
 
     [Fact]
@@ -77,10 +83,12 @@ public class ResultExtensionsTests
     [Fact]
     public async Task OnSuccessAsync_FailedResult_ReturnsOriginalFailure()
     {
-        var initialResult = Result<int>.Failure("Initial error");
+        var error = Error.Validation("InitialError", "Initial error");
+        var initialResult = Result<int>.Failure(error);
         var transformedResult = await initialResult.OnSuccessAsync(async value => await Task.FromResult(value.ToString()));
 
         Assert.True(transformedResult.IsFailure);
-        Assert.Equal("Initial error", transformedResult.Errors[0]);
+        Assert.Equal(error, transformedResult.Error);
+        Assert.Equal(ErrorType.Validation, transformedResult.ErrorType);
     }
 }

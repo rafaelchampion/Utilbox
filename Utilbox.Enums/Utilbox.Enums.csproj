@@ -14,13 +14,13 @@
         <Title>Utilbox.Enums</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
         <PackageIcon>Logo.Utilbox.Enum.png</PackageIcon>
-        <icon>https://i.postimg.cc/ygMsY5Ps/Logo-Utilbox-Enum.png</icon>
+        <icon>https://i.postimg.cc/215h5SVN/Logo-Utilbox-Enum.png</icon>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
 
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-        <Version>2.0.0</Version>
+        <Version>2.1.0</Version>
 
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -28,7 +28,7 @@
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations"/>
         <PackageReference Include="System.Runtime"/>
-        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
         <None Include="..\Media\Logo.Utilbox.Enum.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 

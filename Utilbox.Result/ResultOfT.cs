@@ -10,52 +10,145 @@ namespace Utilbox.Result;
 /// <typeparam name="T">The type of the value returned on success.</typeparam>
 public class Result<T> : Result
 {
-    /// <summary>
-    /// Gets the value associated with the result if it is successful.
-    /// </summary>
-    public T Value { get; }
+    private readonly T? _value;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result{T}"/> class with the specified success status, value, and optional errors.
+    /// Gets the value if the result is successful.
+    /// Throws InvalidOperationException if accessed on a failed result.
     /// </summary>
-    /// <param name="isSuccess">Indicates whether the operation was successful.</param>
-    /// <param name="value">The value returned on success.</param>
-    /// <param name="errors">Optional list of error messages.</param>
-    private Result(bool isSuccess, T value, IEnumerable<string>? errors = null)
-        : base(isSuccess, errors)
+    public T Value => IsSuccess ? _value! : throw new InvalidOperationException("Cannot access Value on a failed Result.");
+
+    private Result(T value) : base(true) // Success constructor
     {
-        Value = value;
+        _value = value;
     }
+
+    private Result(Error error, Exception? exception = null) : base(false, error, null, exception) { }
+    private Result(List<Error> errors, Exception? exception = null) : base(false, errors.First(), errors, exception) { }
+
 
     /// <summary>
     /// Creates a successful result with the given value.
     /// </summary>
-    /// <param name="data">The value to return on success.</param>
+    /// <param name="value">The value to return on success.</param>
     /// <returns>A successful <see cref="Result{T}"/>.</returns>
-    public static Result<T> Success(T data)
+    public static Result<T> Success(T value) => new Result<T>(value);
+
+    /// <summary>
+    /// Creates a failed result with a single error.
+    /// </summary>
+    /// <param name="error">The error object.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
+    /// <returns>A failed <see cref="Result{T}"/>.</returns>
+    public new static Result<T> Failure(Error error, Exception? exception = null)
     {
-        return new Result<T>(true, data);
+        if (error == Error.None)
+            throw new ArgumentException("Cannot create failure with Error.None.", nameof(error));
+        return new Result<T>(error, exception);
     }
 
     /// <summary>
-    /// Creates a failed result with a single error message.
+    /// Creates a failed result with multiple errors.
     /// </summary>
-    /// <param name="error">The error message.</param>
+    /// <param name="errors">The list of error objects.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
     /// <returns>A failed <see cref="Result{T}"/>.</returns>
-    public new static Result<T> Failure(string error)
+    public new static Result<T> Failure(List<Error> errors, Exception? exception = null)
     {
-        return new Result<T>(false, default, [error]);
+        if (errors == null || errors.Count == 0 || errors.Contains(Error.None))
+            throw new ArgumentException("Must provide at least one valid error.", nameof(errors));
+        return new Result<T>(errors, exception);
     }
 
     /// <summary>
-    /// Creates a failed result with multiple error messages.
+    /// Creates a generic failed result with a single error description.
     /// </summary>
-    /// <param name="errors">The error messages.</param>
+    /// <param name="errorDescription">The error description.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
     /// <returns>A failed <see cref="Result{T}"/>.</returns>
-    public new static Result<T> Failure(IEnumerable<string>? errors)
+    /// <remarks>
+    /// This method is deprecated. Use <see cref="Failure(Error, Exception?)"/> instead.
+    /// </remarks>
+    [Obsolete]
+    public new static Result<T> Failure(string errorDescription, Exception? exception = null)
     {
-        return new Result<T>(false, default!, errors?.ToArray());
+        return Failure(Error.Generic("General", errorDescription), exception);
     }
+
+    /// <summary>
+    /// Creates a generic failed result with multiple error descriptions.
+    /// </summary>
+    /// <param name="errorDescriptions">The list of error descriptions.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
+    /// <returns>A failed <see cref="Result{T}"/>.</returns>
+    /// <remarks>
+    /// This method is deprecated. Use <see cref="Failure(List{Error}, Exception?)"/> instead.
+    /// </remarks>
+    [Obsolete]
+    public new static Result<T> Failure(IEnumerable<string> errorDescriptions, Exception? exception = null)
+    {
+        var descriptions = errorDescriptions?.ToList();
+        if (descriptions == null || descriptions.Count == 0)
+            throw new ArgumentException("Must provide at least one error description.", nameof(errorDescriptions));
+
+        var errors = descriptions.Select(desc => Error.Generic("General", desc)).ToList();
+        return Failure(errors, exception);
+    }
+
+    /// <summary>
+    /// Creates a "Not Found" error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with a "Not Found" error.</returns>
+    public new static Result<T> NotFound(string code = "NotFound", string description = "Resource not found.") => Failure(Error.NotFound(code, description));
+
+    /// <summary>
+    /// Creates a validation error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with a validation error.</returns>
+    public new static Result<T> Validation(string code = "Validation", string description = "Input validation failed.") => Failure(Error.Validation(code, description));
+
+    /// <summary>
+    /// Creates a validation error result with multiple validation errors.
+    /// </summary>
+    /// <param name="validationErrors">The list of validation errors.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with multiple validation errors.</returns>
+    public new static Result<T> Validation(List<Error> validationErrors) => Failure(validationErrors);
+
+    /// <summary>
+    /// Creates a conflict error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with a conflict error.</returns>
+    public new static Result<T> Conflict(string code = "Conflict", string description = "A conflict occurred.") => Failure(Error.Conflict(code, description));
+
+    /// <summary>
+    /// Creates an authentication error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with an authentication error.</returns>
+    public new static Result<T> Unauthorized(string code = "AuthN", string description = "Authentication required.") => Failure(Error.Authentication(code, description));
+
+    /// <summary>
+    /// Creates an authorization error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with an authorization error.</returns>
+    public new static Result<T> Forbidden(string code = "AuthZ", string description = "Authorization failed.") => Failure(Error.Authorization(code, description));
+
+    /// <summary>
+    /// Creates an unexpected error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result{T}"/> with an unexpected error.</returns>
+    public new static Result<T> Unexpected(string code = "Unexpected", string description = "An unexpected error occurred.") => Failure(Error.Unexpected(code, description));
 
     /// <summary>
     /// Maps the current result into a new result of type <typeparamref name="TOut"/> based on the success status.
@@ -65,7 +158,8 @@ public class Result<T> : Result
     /// <returns>A <see cref="Result{TOut}"/> representing the mapped outcome.</returns>
     public Result<TOut> Map<TOut>(Func<T, TOut> mapFunc)
     {
-        return IsSuccess ? Result<TOut>.Success(mapFunc(Value)) : Result<TOut>.Failure(Errors);
+        // Preserve errors on failure when mapping
+        return IsSuccess ? Result<TOut>.Success(mapFunc(Value)) : Result<TOut>.Failure(Errors.ToList());
     }
 
     /// <summary>
@@ -75,7 +169,7 @@ public class Result<T> : Result
     /// <param name="onSuccess">Function to execute if the result is successful.</param>
     /// <param name="onFailure">Function to execute if the result is a failure.</param>
     /// <returns>The result of either the onSuccess or onFailure function.</returns>
-    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<IReadOnlyCollection<string>, TOut> onFailure)
+    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<IReadOnlyList<Error>, TOut> onFailure)
     {
         return IsSuccess ? onSuccess(Value) : onFailure(Errors);
     }
@@ -115,7 +209,7 @@ public class Result<T> : Result
     /// </summary>
     /// <param name="action">The action to execute if failed, with error messages.</param>
     /// <returns>The current <see cref="Result{T}"/>.</returns>
-    public new Result<T> OnFailure(Action<IReadOnlyCollection<string>> action)
+    public new Result<T> OnFailure(Action<IReadOnlyCollection<Error>> action)
     {
         if (IsFailure)
         {
@@ -129,28 +223,24 @@ public class Result<T> : Result
     /// Ensures that a predicate is satisfied, otherwise returns a failure.
     /// </summary>
     /// <param name="predicate">The predicate to check.</param>
-    /// <param name="errorMessage">The error message to return if the predicate fails.</param>
+    /// <param name="error">The error to return if the predicate fails.</param>
     /// <returns>The current Result if the predicate is satisfied, otherwise a failure Result.</returns>
-    public Result<T> Ensure(Func<T, bool> predicate, string errorMessage)
+    public Result<T> Ensure(Func<T, bool> predicate, Error error)
     {
-        if (IsFailure)
-            return this;
-
-        return predicate(Value) ? this : Failure(errorMessage);
+        if (IsFailure) return this;
+        return predicate(Value) ? this : Failure(error);
     }
 
     /// <summary>
     /// Ensures that a predicate is satisfied, otherwise returns a failure.
     /// </summary>
     /// <param name="predicate">The predicate to check.</param>
-    /// <param name="errorMessages">The error messages to return if the predicate fails.</param>
+    /// <param name="errorFactory">A function that creates an error based on the value if the predicate fails.</param>
     /// <returns>The current Result if the predicate is satisfied, otherwise a failure Result.</returns>
-    public Result<T> Ensure(Func<T, bool> predicate, IEnumerable<string> errorMessages)
+    public Result<T> Ensure(Func<T, bool> predicate, Func<T, Error> errorFactory) // Allow error generation based on value
     {
-        if (IsFailure)
-            return this;
-
-        return predicate(Value) ? this : Failure(errorMessages);
+        if (IsFailure) return this;
+        return predicate(Value) ? this : Failure(errorFactory(Value));
     }
 
     /// <summary>
@@ -162,12 +252,11 @@ public class Result<T> : Result
     {
         try
         {
-            var value = func();
-            return Success(value);
+            return Success(func());
         }
         catch (Exception ex)
         {
-            return Failure(ex.Message);
+            return Failure(Error.Unexpected(ex.GetType().Name, ex.Message), ex);
         }
     }
 

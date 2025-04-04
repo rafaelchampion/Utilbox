@@ -14,11 +14,11 @@
         <Title>Utilbox.Dates</Title>
         <Summary>A toolbox of utilities for C# developers.</Summary>
         <PackageIcon>Logo.Utilbox.Dates.png</PackageIcon>
-        <icon>https://i.postimg.cc/ygg7KB0L/Logo-Utilbox-Dates.png</icon>
+        <icon>https://i.postimg.cc/qzw203BG/Logo-Utilbox-Dates.png</icon>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
 
-        <Version>2.0.0</Version>
+        <Version>2.1.0</Version>
 
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
@@ -27,7 +27,7 @@
 
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations"/>
-        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
         <None Include="..\Media\Logo.Utilbox.Dates.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 

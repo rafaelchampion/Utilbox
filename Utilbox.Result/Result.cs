@@ -19,13 +19,39 @@ public class Result
     /// </summary>
     public bool IsFailure => !IsSuccess;
 
+    // Stores the primary error for simpler cases or quick type checking
+    private readonly Error _primaryError;
+
+    // Keeps track of multiple errors if needed
+    private readonly List<Error>? _errors;
+
     /// <summary>
-    /// A list of error messages. Empty if the operation was successful.
+    /// Gets the primary error associated with a failure. Returns Error.None if successful.
     /// </summary>
-    public IReadOnlyList<string> Errors { get; }
+    public Error Error => IsFailure ? _primaryError : Error.None;
+
+    /// <summary>
+    /// Gets the specific type of the primary error. Returns Generic if successful.
+    /// </summary>
+    public ErrorType ErrorType => Error.Type;
+
+    /// <summary>
+    /// Gets a list of all errors. Returns an empty list if successful.
+    /// </summary>
+    public IReadOnlyList<Error> Errors
+    {
+        get
+        {
+            if (_errors != null)
+                return _errors.AsReadOnly();
+
+            return IsFailure ? [_primaryError] : new List<Error>();
+        }
+    }
 
     /// <summary>
     /// Gets the exception that caused the failure, if any.
+    /// Preserved for compatibility and specific scenarios.
     /// </summary>
     public Exception? Exception { get; }
 
@@ -33,12 +59,22 @@ public class Result
     /// Initializes a new instance of the <see cref="Result"/> class with the specified success status, optional errors, and optional exception.
     /// </summary>
     /// <param name="isSuccess">Indicates whether the operation was successful.</param>
-    /// <param name="errors">Optional list of error messages.</param>
+    /// <param name="primaryError">Optional primary error. Defaults to the first error in the list if provided.</param>
+    /// <param name="allErrors">Optional list of all errors.</param>
     /// <param name="exception">Optional exception that caused the failure.</param>
-    protected Result(bool isSuccess, IEnumerable<string>? errors = null, Exception? exception = null)
+    protected Result(bool isSuccess, Error? primaryError = null, List<Error>? allErrors = null, Exception? exception = null)
     {
+        switch (isSuccess)
+        {
+            case true when (primaryError != null || allErrors is { Count: > 0 }):
+                throw new InvalidOperationException("Cannot create a successful result with errors.");
+            case false when primaryError == null && (allErrors == null || allErrors.Count == 0):
+                throw new InvalidOperationException("Cannot create a failed result without an error.");
+        }
+
         IsSuccess = isSuccess;
-        Errors = errors?.ToList() ?? [];
+        _primaryError = primaryError ?? (allErrors?.FirstOrDefault() ?? Error.None);
+        _errors = allErrors;
         Exception = exception;
     }
 
@@ -51,30 +87,125 @@ public class Result
     /// Creates a successful result with no errors.
     /// </summary>
     /// <returns>A successful <see cref="Result"/>.</returns>
-    public static Result Success()
+    public static Result Success() => new Result(true);
+
+    /// <summary>
+    /// Creates a failed result with a single error.
+    /// </summary>
+    /// <param name="error">The error object.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
+    /// <returns>A failed <see cref="Result"/>.</returns>
+    public static Result Failure(Error error, Exception? exception = null)
     {
-        return new Result(true);
+        if (error == Error.None)
+            throw new ArgumentException("Cannot create failure with Error.None.", nameof(error));
+        return new Result(false, error, null, exception);
     }
 
     /// <summary>
-    /// Creates a failed result with a single error message.
+    /// Creates a failed result with multiple errors.
     /// </summary>
-    /// <param name="error">The error message.</param>
+    /// <param name="errors">The list of error objects.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
     /// <returns>A failed <see cref="Result"/>.</returns>
-    public static Result Failure(string error)
+    public static Result Failure(List<Error> errors, Exception? exception = null)
     {
-        return new Result(false, [error]);
+        if (errors == null || errors.Count == 0 || errors.Contains(Error.None))
+            throw new ArgumentException("Must provide at least one valid error.", nameof(errors));
+        return new Result(false, errors.First(), errors, exception);
     }
 
     /// <summary>
-    /// Creates a failed result with multiple error messages.
+    /// Creates a generic failed result with a single error description.
     /// </summary>
-    /// <param name="errors">The error messages.</param>
+    /// <param name="errorDescription">The error description.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
     /// <returns>A failed <see cref="Result"/>.</returns>
-    public static Result Failure(IEnumerable<string> errors)
+    /// <remarks>
+    /// This method is deprecated. Use <see cref="Failure(Error, Exception?)"/> instead.
+    /// </remarks>
+    [Obsolete]
+    public static Result Failure(string errorDescription, Exception? exception = null)
     {
-        return new Result(false, errors);
+        return Failure(Error.Generic("General", errorDescription), exception);
     }
+
+    /// <summary>
+    /// Creates a generic failed result with multiple error descriptions.
+    /// </summary>
+    /// <param name="errorDescriptions">The list of error descriptions.</param>
+    /// <param name="exception">Optional exception that caused the failure.</param>
+    /// <returns>A failed <see cref="Result"/>.</returns>
+    /// <remarks>
+    /// This method is deprecated. Use <see cref="Failure(List{Error}, Exception?)"/> instead.
+    /// </remarks>
+    [Obsolete]
+    public static Result Failure(IEnumerable<string> errorDescriptions, Exception? exception = null)
+    {
+        var descriptions = errorDescriptions?.ToList();
+        if (descriptions == null || descriptions.Count == 0)
+            throw new ArgumentException("Must provide at least one error description.", nameof(errorDescriptions));
+
+        var errors = descriptions.Select(desc => Error.Generic("General", desc)).ToList();
+        return Failure(errors, exception);
+    }
+
+    // --- Helper Static Methods for specific error types ---
+
+    /// <summary>
+    /// Creates a "Not Found" error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result"/> with a "Not Found" error.</returns>
+    public static Result NotFound(string code = "NotFound", string description = "Resource not found.") => Failure(Error.NotFound(code, description));
+
+    /// <summary>
+    /// Creates a validation error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result"/> with a validation error.</returns>
+    public static Result Validation(string code = "Validation", string description = "Input validation failed.") => Failure(Error.Validation(code, description));
+
+    /// <summary>
+    /// Creates a validation error result with multiple validation errors.
+    /// </summary>
+    /// <param name="validationErrors">The list of validation errors.</param>
+    /// <returns>A failed <see cref="Result"/> with multiple validation errors.</returns>
+    public static Result Validation(List<Error> validationErrors) => Failure(validationErrors);
+
+    /// <summary>
+    /// Creates a conflict error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result"/> with a conflict error.</returns>
+    public static Result Conflict(string code = "Conflict", string description = "A conflict occurred.") => Failure(Error.Conflict(code, description));
+
+    /// <summary>
+    /// Creates an authentication error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result"/> with an authentication error.</returns>
+    public static Result Unauthorized(string code = "AuthN", string description = "Authentication required.") => Failure(Error.Authentication(code, description));
+
+    /// <summary>
+    /// Creates an authorization error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result"/> with an authorization error.</returns>
+    public static Result Forbidden(string code = "AuthZ", string description = "Authorization failed.") => Failure(Error.Authorization(code, description));
+
+    /// <summary>
+    /// Creates an unexpected error result.
+    /// </summary>
+    /// <param name="code">The error code.</param>
+    /// <param name="description">The error description.</param>
+    /// <returns>A failed <see cref="Result"/> with an unexpected error.</returns>
+    public static Result Unexpected(string code = "Unexpected", string description = "An unexpected error occurred.") => Failure(Error.Unexpected(code, description));
 
     /// <summary>
     /// Combines multiple results into a single result. If any of the results are failures, the combined result will also be a failure.
@@ -83,8 +214,8 @@ public class Result
     /// <returns>A <see cref="Result"/> representing the outcome of all combined results.</returns>
     public static Result Combine(params Result[] results)
     {
-        var errors = results.Where(r => r.IsFailure).SelectMany(r => r.Errors).ToList();
-        return errors.Count != 0 ? Result.Failure(errors) : Result.Success();
+        var combinedErrors = results.Where(r => r.IsFailure).SelectMany(r => r.Errors).ToList();
+        return combinedErrors.Count == 0 ? Success() : Failure(combinedErrors);
     }
 
     /// <summary>
@@ -118,17 +249,13 @@ public class Result
     }
 
     /// <summary>
-    /// Executes an action if the result is a failure, providing the error messages.
+    /// Executes an action if the result is a failure, providing the error.
     /// </summary>
-    /// <param name="action">The action to execute if failed, with error messages.</param>
+    /// <param name="action">The action to execute if failed, with the primary error.</param>
     /// <returns>The current <see cref="Result"/>.</returns>
-    public Result OnFailure(Action<IReadOnlyCollection<string>> action)
+    public Result OnFailure(Action<Error> action)
     {
-        if (IsFailure)
-        {
-            action(Errors);
-        }
-
+        if (IsFailure) action(Error); // Pass the primary error
         return this;
     }
 
@@ -146,7 +273,7 @@ public class Result
         }
         catch (Exception ex)
         {
-            return Failure(ex.Message);
+            return Failure(Error.Unexpected(ex.GetType().Name, ex.Message), ex);
         }
     }
 

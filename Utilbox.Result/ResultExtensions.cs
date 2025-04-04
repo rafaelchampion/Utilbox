@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Utilbox.Result;
 
@@ -32,7 +33,7 @@ public static class ResultExtensions
         this Result<TIn> result,
         Func<TIn, Result<TOut>> func)
     {
-        return result.IsFailure ? Result<TOut>.Failure(result.Errors) : func(result.Value);
+        return result.IsFailure ? Result<TOut>.Failure(result.Errors.ToList()) : func(result.Value);
     }
 
     /// <summary>
@@ -68,11 +69,11 @@ public static class ResultExtensions
         Func<TIn, Task<Result<TOut>>> func)
     {
         if (result.IsFailure)
-            return Result<TOut>.Failure(result.Errors);
+            return Result<TOut>.Failure(result.Errors.ToList());
 
         return await func(result.Value);
     }
-    
+
     /// <summary>
     /// Executes a synchronous transformation on the value of a successful Result.
     /// This method is used when the transformation itself cannot fail and returns a regular value
@@ -105,8 +106,8 @@ public static class ResultExtensions
         Func<TIn, TOut> func)
     {
         if (result.IsFailure)
-            return Result<TOut>.Failure(result.Errors);
-            
+            return Result<TOut>.Failure(result.Errors.ToList());
+
         var value = func(result.Value);
         return Result<TOut>.Success(value);
     }
@@ -148,7 +149,7 @@ public static class ResultExtensions
         Func<TIn, Task<TOut>> func)
     {
         if (result.IsFailure)
-            return Result<TOut>.Failure(result.Errors);
+            return Result<TOut>.Failure(result.Errors.ToList());
 
         var value = await func(result.Value);
         return Result<TOut>.Success(value);
